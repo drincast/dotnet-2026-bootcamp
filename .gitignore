@@ -1,0 +1,53 @@
+# Build
+bin/
+obj/
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# NuGet
+*.nupkg
+*.snupkg
+packages/
+project.lock.json
+
+# Publicación
+publish/
+out/
+
+# Logs
+logs/
+*.log
+
+# Base de datos local (EF Core - S2)
+*.db
+*.db-shm
+*.db-wal
+*.mdf
+*.ldf
+
+# Secretos y configuración sensible
+appsettings.Local.json
+appsettings.*.local.json
+secrets.json
+.env
+.env.*
+
+# Docker (S7)
+.dockerignore
+
+# Cobertura de tests (S5)
+coverage/
+*.coverage
+*.coveragexml
+TestResults/
+
+# JetBrains Rider
+.idea/
+
+# macOS
+.DS_Store

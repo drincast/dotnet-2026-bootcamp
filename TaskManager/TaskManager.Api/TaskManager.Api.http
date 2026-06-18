@@ -1,0 +1,34 @@
+@TaskManager.Api_HostAddress = http://localhost:5151
+# @TaskManager.Api_HostAddress = https://localhost:7220
+
+GET {{TaskManager.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
+GET {{TaskManager.Api_HostAddress}}/tasks/
+Accept: application/json
+
+###
+GET {{TaskManager.Api_HostAddress}}/tasks?page=2
+Accept: application/json
+
+###
+GET {{TaskManager.Api_HostAddress}}/tasks?page=2&pageSize=3
+Accept: application/json
+
+###
+GET {{TaskManager.Api_HostAddress}}/tasks/1
+Accept: application/json
+
+###
+POST {{TaskManager.Api_HostAddress}}/tasks
+Content-Type: application/json
+{
+  "title": "tarea prueba"
+}
+
+###
+DELETE {{TaskManager.Api_HostAddress}}/tasks/1
+Accept: application/json
+
+###
