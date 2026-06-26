@@ -9,13 +9,15 @@ builder.Services.AddOpenApi();
 
 //registro de configuraciones
 builder.Services.Configure<TaskManagerOptions>(
-    builder.Configuration.GetSection(TaskManagerOptions.SectionName));
+    builder.Configuration.GetSection(TaskManagerOptions.SectionName)
+);
 
 // SQLite para desarrollo local, sin instalar SQL Server
 builder.Services.AddDbContext<TaskManagerDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"))
            .EnableSensitiveDataLogging(builder.Environment.IsDevelopment())
-           .EnableDetailedErrors(builder.Environment.IsDevelopment()));
+           .EnableDetailedErrors(builder.Environment.IsDevelopment())
+);
 
 var app = builder.Build();
 

@@ -1,4 +1,6 @@
-﻿namespace TaskManager.Api
+﻿using Microsoft.Extensions.Options;
+
+namespace TaskManager.Api
 {
     public class ExceptionHandlingMiddleware
     {
@@ -9,7 +11,8 @@
             _next = next;
         }
 
-        public async Task InvokeAsync(HttpContext httpContext)
+        public async Task InvokeAsync(HttpContext httpContext
+            , IOptions<TaskManagerOptions> options)
         {
             try
             {
@@ -24,7 +27,7 @@
 
                 await httpContext.Response.WriteAsJsonAsync(new
                 {
-                    Error = "Ocurrio un error interno",
+                    Error = options.Value.GeneralErrorApp,
                     // En producción NUNCA expongas ex.Message ni el stack trace
                 });
                    

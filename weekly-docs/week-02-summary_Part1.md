@@ -51,6 +51,8 @@ Si se elimina un usuario, las tareas quedan sin asignar pero no se eliminan. Dec
 
 Fluent API siempre para proyectos serios. Data Annotations mezclan preocupaciones de infraestructura dentro del dominio — si mañana cambias el ORM, tus entidades quedan contaminadas. Con Fluent API las entidades son POCO limpios y la configuración de persistencia vive donde corresponde: en Infrastructure.
 
+"Fluent API para configurar la persistencia de las entidades de dominio, porque en Clean Architecture el dominio no puede depender de infraestructura y las Data Annotations de schema acoplarían mis POCO al ORM. Además Fluent API expresa cosas que las anotaciones no pueden: value objects, claves compuestas, conversiones, cascadas. Reservo las Data Annotations para validación de entrada en los DTOs, que es su lugar natural en la capa de presentación."
+
 **"¿Qué es el DbContext y qué responsabilidades tiene?"**
 
 Es el puente entre el código C# y la base de datos. Gestiona tres cosas: qué entidades mapear a tablas (`DbSet<T>`), cómo mapearlas (nombres, restricciones, relaciones via `OnModelCreating`), y el tracking de cambios en los objetos en memoria.

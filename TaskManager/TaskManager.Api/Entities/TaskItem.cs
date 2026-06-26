@@ -5,7 +5,7 @@ public class TaskItem
     public string Title { get; set; } = default!;
     public string? Description { get; set; }
     public TaskStatus Status { get; set; }
-    public DateTime CreatedAt { get; set; }
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime? DueDate { get; set; }
     
     public int ProjectId { get; set; }

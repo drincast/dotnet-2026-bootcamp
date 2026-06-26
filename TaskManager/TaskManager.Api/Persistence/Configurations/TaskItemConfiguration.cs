@@ -16,8 +16,9 @@ public class TaskItemConfiguration : IEntityTypeConfiguration<TaskItem>
             .HasConversion<string>() // guarda "Todo", "InProgress"... no 0,1,2
             .HasMaxLength(20);
 
-        builder.Property(t => t.CreatedAt)
-            .HasDefaultValueSql("GETUTCDATE()");
+        // builder.Property(t => t.CreatedAt)
+        //     //.HasDefaultValueSql("GETUTCDATE()"); //solo SQL Server
+        //     .HasDefaultValue(DateTime.UtcNow); //solo se ejecuta una vez y todas las tareas nuevas registradas quedarian con la misma fecha
 
         builder.HasOne(t => t.Project)
             .WithMany(p => p.Tasks)
