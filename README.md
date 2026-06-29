@@ -18,7 +18,7 @@ No es un repositorio de tutoriales — es un plan de trabajo real, con decisione
 | Semana | Tecnología principal |
 |--------|---------------------|
 | S1 ✅ | .NET 10, ASP.NET Core, Minimal APIs, Middleware, `IOptions<T>` |
-| S2 | Entity Framework Core 10 — Code First, Migrations, DbContext |
+| S2 ✅ | Entity Framework Core 10 — Code First, Fluent API, Migrations, AsNoTracking, proyecciones |
 | S3 | DI nativa, SOLID pragmático, MediatR (CQRS), Pipeline Behaviors |
 | S4 | Clean Architecture, Vertical Slice Architecture, DDD táctico |
 | S5 | xUnit, NSubstitute, FluentAssertions, WebApplicationFactory, TestContainers |
@@ -57,7 +57,7 @@ dotnet-2026-bootcamp/
 Un solo proyecto que **evoluciona cada semana**, acumulando capas de complejidad real:
 
 - **S1 ✅** — Skeleton: Minimal APIs, middleware de logging y manejo de excepciones, configuración tipada con `IOptions<T>`
-- **S2** — Persistencia: EF Core Code First, entidades `Task / Project / User`, migrations
+- **S2 ✅** — Persistencia: EF Core Code First con Fluent API, entidades `TaskItem / Project / User`, migrations, CRUD real sobre SQLite, lecturas optimizadas (`AsNoTracking` + proyección `Select`)
 - **S3** — Refactor: MediatR, Commands, Queries, Pipeline Behaviors transversales
 - **S4** — Arquitectura: Clean Architecture (Domain / Application / Infrastructure / API)
 - **S5** — Testing: handlers unitarios + integration tests end-to-end con BD real
@@ -103,14 +103,20 @@ Cada semana tiene un documento en `weekly-docs/` con:
 
 ---
 
-## Cómo correr el proyecto (Semana 1)
+## Cómo correr el proyecto (estado actual — Semana 2)
 
-**Prerequisitos**: .NET 10 SDK
+**Prerequisitos**: .NET 10 SDK y la herramienta `dotnet-ef` (`dotnet tool install --global dotnet-ef`)
 
 ```bash
 cd TaskManager/TaskManager.Api
+
+# Crear/actualizar la base de datos SQLite a partir de las migrations
+dotnet ef database update
+
 dotnet run
 ```
+
+La base de datos SQLite (`taskmanager.db`) se genera localmente a partir de las migrations — no se versiona en el repositorio.
 
 Endpoints disponibles en `https://localhost:{puerto}/`:
 
@@ -118,10 +124,10 @@ Endpoints disponibles en `https://localhost:{puerto}/`:
 |--------|------|-------------|
 | `GET` | `/tasks` | Lista paginada (`?page=1&pageSize=5`) |
 | `GET` | `/tasks/{id}` | Tarea por ID |
+| `GET` | `/tasks/detailed` | Lista con datos de proyecto y usuario asignado (proyección) |
 | `POST` | `/tasks` | Crear tarea |
+| `PUT` | `/tasks/{id}` | Actualizar tarea |
 | `DELETE` | `/tasks/{id}` | Eliminar tarea |
-
-> A partir de S2 se agrega base de datos. Los requisitos de configuración se documentan en el `week-NN.md` correspondiente.
 
 ---
 
@@ -146,7 +152,7 @@ El archivo `.cowork` es metadata de [cowork](https://github.com/drincast/cowork)
 | Semana | Estado | Rama |
 |--------|--------|------|
 | S1 — .NET 10 + ASP.NET Core | ✅ Completada | `week-01` |
-| S2 — Entity Framework Core | ⬜ Pendiente | — |
+| S2 — Entity Framework Core | ✅ Completada | `week-02` |
 | S3 — DI + MediatR | ⬜ Pendiente | — |
 | S4 — Clean Architecture | ⬜ Pendiente | — |
 | S5 — Testing | ⬜ Pendiente | — |

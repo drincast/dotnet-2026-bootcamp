@@ -1,7 +1,7 @@
 # Estado actual del plan de estudio
 
 ## Última actualización
-Sesión inicial — Plan diseñado, pendiente de iniciar ejecución.
+2026-06-28 — Semana 2 cerrada formalmente. Listo para iniciar Semana 3 (DI + MediatR).
 
 ---
 
@@ -9,8 +9,8 @@ Sesión inicial — Plan diseñado, pendiente de iniciar ejecución.
 
 | Semana | Estado | Notas |
 |--------|--------|-------|
-| S1 — .NET 8 + ASP.NET Core | ✅ Completado | finalizado con proyecto con minimal APIs |
-| S2 — EF Core | ⬜ Pendiente | — |
+| S1 — .NET 10 + ASP.NET Core | ✅ Completado | Skeleton con Minimal APIs, middleware custom, IOptions. Rama `week-01` |
+| S2 — EF Core | ✅ Completado | Code First + Fluent API, CRUD real sobre SQLite, AsNoTracking, proyecciones, N+1. Rama `week-02` |
 | S3 — DI + MediatR | ⬜ Pendiente | — |
 | S4 — Clean Architecture | ⬜ Pendiente | — |
 | S5 — Testing | ⬜ Pendiente | — |
@@ -25,26 +25,32 @@ Sesión inicial — Plan diseñado, pendiente de iniciar ejecución.
 ---
 
 ## Semana actual
-**Semana 1** — El usuario aún no ha comenzado. El plan fue diseñado en la sesión inicial.
+**Semana 3 — DI + SOLID + MediatR (CQRS)** — Pendiente de iniciar. Las Semanas 1 y 2 están completas y documentadas en `weekly-docs/`.
+
+**Deuda técnica heredada de S2 a resolver en el refactor:**
+- Paginación duplicada entre `GetAll` y `GetTaskDetailed` → encuentra su lugar natural con MediatR (`PagedResult<T>` o pipeline behavior).
+- Código muerto menor: borrar `TaskItemsListDummy()` y corregir comentario obsoleto "retorna lista harcodeada" en `GetAll`.
 
 ---
 
 ## Temas profundizados (más allá del plan base)
 
-_Ninguno aún. Actualizar aquí cuando el usuario pida profundizar en algún tema específico._
+- **S2 — Relaciones, N+1 y proyecciones** (`weekly-docs/week-02-summary_Part2.1.md`): problema N+1 y su detección en logs de EF Core, por qué no activar lazy loading por defecto, `Include` (eager) vs `Select` (proyección) vs Split Queries vs explicit loading, explosión cartesiana y stitching en memoria, round-trips y latencia de red.
+- **S2 — Distinción 400 vs 500**: `Enum.TryParse` para tratar dato inválido del cliente como `400 Bad Request` en lugar de `500`.
+- **S2 — Operador null-forgiving (`!`)**: no cambia el comportamiento en runtime; solo defendible cuando el dominio garantiza el valor (FK obligatoria).
 
 ---
 
 ## Dudas o bloqueos registrados
 
-_Ninguno aún._
+- **Anotado para S8 (Observabilidad)**: error `transfer closed with outstanding read data` / "response has already started" al escribir respuestas de error desde el middleware. Solución senior: validar `context.Response.HasStarted` y usar `Results.Problem` / `ProblemDetails` (RFC 7807). No bloqueante.
 
 ---
 
 ## Estado del proyecto TaskManager API
 
 - [✅] Semana 1: Skeleton con Minimal APIs
-- [ ] Semana 2: Persistencia con EF Core
+- [✅] Semana 2: Persistencia con EF Core
 - [ ] Semana 3: Refactor con MediatR
 - [ ] Semana 4: Restructuración en Clean Architecture
 - [ ] Semana 5: Suite de tests

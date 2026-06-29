@@ -9,7 +9,11 @@ GET {{TaskManager.Api_HostAddress}}/tasks/
 Accept: application/json
 
 ###
-GET {{TaskManager.Api_HostAddress}}/tasks?page=2
+GET {{TaskManager.Api_HostAddress}}/tasks?page=1
+Accept: application/json
+
+###
+GET {{TaskManager.Api_HostAddress}}/tasks/detailed?page=1
 Accept: application/json
 
 ###
@@ -24,7 +28,10 @@ Accept: application/json
 POST {{TaskManager.Api_HostAddress}}/tasks
 Content-Type: application/json
 {
-  "title": "tarea prueba"
+  "title": "tarea prueba test",
+  "status": "Todo",
+  "AssignedToId": null,
+  "ProjectId": 1
 }
 
 ###

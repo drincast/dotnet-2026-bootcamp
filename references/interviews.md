@@ -2,7 +2,7 @@
 
 ## Bloque 1 — Imprescindibles (aparecen en casi toda entrevista)
 
-### ¿Cuáles son las diferencias principales entre .NET Framework y .NET 8?
+### ¿Cuáles son las diferencias principales entre .NET Framework y .NET moderno (.NET 8+)?
 
 **Respuesta modelo**:
 .NET moderno (antes .NET Core, hoy simplemente .NET) es cross-platform, open-source y con un modelo

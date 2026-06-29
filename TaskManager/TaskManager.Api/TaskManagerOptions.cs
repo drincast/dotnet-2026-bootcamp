@@ -6,8 +6,9 @@
         public const string SectionName = "TaskManager";
 
         //configuraciones
-        public int MaxTasksPerUser { get; set; }
         public bool AllowCompletedTaskDeletion { get; set; }
         public int DefaultPageSize { get; set; }
+        public string ? GeneralErrorApp { get; set; }
+        public int MaxTasksPerUser { get; set; }
     }
 }
