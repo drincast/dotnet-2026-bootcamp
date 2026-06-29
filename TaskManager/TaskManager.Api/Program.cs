@@ -25,6 +25,12 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+
+    //Esta seccion aun no la vemos pero la dejo comentada cuando se toque el tema
+    //using var scope = app.Services.CreateScope();
+    //var db = scope.ServiceProvider.GetRequiredService<TaskManagerDbContext>();
+    //db.Database.Migrate();
+
 }
 
 //uso de servicios basicos
