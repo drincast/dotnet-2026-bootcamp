@@ -30,7 +30,7 @@ Content-Type: application/json
 {
   "title": "tarea prueba test",
   "status": "Todo",
-  "AssignedToId": 1,
+  "AssignedToId": null,
   "ProjectId": 1
 }
 

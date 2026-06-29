@@ -1,8 +1,8 @@
 # Plan completo — Detalle por semana
 
-## Semana 1 — .NET 8 y ASP.NET Core (15–18h)
+## Semana 1 — .NET 10 y ASP.NET Core (15–18h)
 
-**Tecnologías**: .NET 8 SDK, ASP.NET Core, Minimal APIs, Program.cs sin Startup, top-level statements
+**Tecnologías**: .NET 10 SDK, ASP.NET Core, Minimal APIs, Program.cs sin Startup, top-level statements
 
 **Objetivos**:
 - Entender el nuevo modelo de hosting unificado y diferencias con .NET Framework
@@ -23,7 +23,7 @@ con Minimal APIs, middleware de logging custom.
 
 ## Semana 2 — Entity Framework Core (15–18h)
 
-**Tecnologías**: EF Core 8, Code First, Migrations, DbContext pooling, Raw SQL seguro, Repository pattern
+**Tecnologías**: EF Core 10, Code First, Migrations, DbContext pooling, Raw SQL seguro, Repository pattern
 
 **Objetivos**:
 - Dominar Code First con Fluent API (no Data Annotations para proyectos serios)
