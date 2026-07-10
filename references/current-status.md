@@ -11,7 +11,7 @@
 |--------|--------|-------|
 | S1 — .NET 10 + ASP.NET Core | ✅ Completado | Skeleton con Minimal APIs, middleware custom, IOptions. Rama `week-01` |
 | S2 — EF Core | ✅ Completado | Code First + Fluent API, CRUD real sobre SQLite, AsNoTracking, proyecciones, N+1. Rama `week-02` |
-| S3 — DI + MediatR | ⬜ Pendiente | — |
+| S3 — DI + MediatR | 🔄 En progreso | Se reviso lifetime, DI y SOLID pragmático, se inicio implementacion de MediatR|
 | S4 — Clean Architecture | ⬜ Pendiente | — |
 | S5 — Testing | ⬜ Pendiente | — |
 | S6 — Seguridad JWT/OAuth | ⬜ Pendiente | — |

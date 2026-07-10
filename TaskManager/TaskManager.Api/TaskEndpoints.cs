@@ -1,7 +1,8 @@
-﻿using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
-using System.Net.NetworkInformation;
+
+using MediatR;
+using TaskManager.Api.Features.Task;
 
 namespace TaskManager.Api
 {
@@ -19,35 +20,43 @@ namespace TaskManager.Api
 
 
         //GET /tasks - retorna lista de la base de datos
-        private static async Task<IResult> GetAll(IOptions<TaskManagerOptions> options
-                , TaskManagerDbContext db
-                , CancellationToken ct
-                , int page = 1
-                , int ? pageSize = null)
+        //private static async Task<IResult> GetAll(IOptions<TaskManagerOptions> options
+        //        , TaskManagerDbContext db
+        //        , CancellationToken ct
+        //        , int page = 1
+        //        , int ? pageSize = null)
+        //{
+
+        //    //paginación
+        //    var size = pageSize ?? options.Value.DefaultPageSize;
+        //    var totalItems = await db.TaskItems.CountAsync(ct);
+
+        //    var items = await db.TaskItems
+        //            .AsNoTracking()
+        //            .OrderBy(t => t.Id)
+        //            .Skip((page - 1) * size) //salta las paginas anteriores
+        //            .Take(size)
+        //            .Select( t => new
+        //            {
+        //                t.Id, t.Title, Done = t.Status == TaskStatus.Done
+        //            })
+        //            .ToListAsync(ct);
+
+        //    return Results.Ok(new
+        //    {
+        //        Page = page,
+        //        PageSize = size,
+        //        TotalItems = totalItems,
+        //        Items = items
+        //    });
+        //}
+
+        //con mediatr
+        private static async Task<IResult> GetAll(
+            ISender sender, CancellationToken ct, int page = 1, int? pageSize = null)
         {
-
-            //paginación
-            var size = pageSize ?? options.Value.DefaultPageSize;
-            var totalItems = await db.TaskItems.CountAsync(ct);
-
-            var items = await db.TaskItems
-                    .AsNoTracking()
-                    .OrderBy(t => t.Id)
-                    .Skip((page - 1) * size) //salta las paginas anteriores
-                    .Take(size)
-                    .Select( t => new
-                    {
-                        t.Id, t.Title, Done = t.Status == TaskStatus.Done
-                    })
-                    .ToListAsync(ct);
-
-            return Results.Ok(new
-            {
-                Page = page,
-                PageSize = size,
-                TotalItems = totalItems,
-                Items = items
-            });
+            var result = await sender.Send(new GetAllTasks.Query(page, pageSize), ct);
+            return Results.Ok(result);
         }
 
         //GET /tasks - retorna una tarea por id
@@ -110,25 +119,37 @@ namespace TaskManager.Api
         }
 
         //POST /tasks - crea una tarea
-        private static async Task<IResult> Create(CreateTaskRequest request
-            , TaskManagerDbContext db
-            , CancellationToken ct)
-        //app.MapPost("/tasks", (CreateTaskRequest request) =>
+        //private static async Task<IResult> Create(CreateTaskRequest request
+        //    , TaskManagerDbContext db
+        //    , CancellationToken ct)
+        ////app.MapPost("/tasks", (CreateTaskRequest request) =>
+        //{
+        //    var task = new TaskItem
+        //    {
+        //        Title = request.Title
+        //        , Status = TaskStatus.Todo
+        //        , AssignedToId = request.AssignedToId
+        //        , ProjectId = request.ProjectId
+        //    };
+
+        //    db.TaskItems.Add(task);
+        //    await db.SaveChangesAsync(ct);
+
+        //    // Por ahora solo echamos el request de vuelta
+        //    return Results.Created($"/tasks/{task.Id}"
+        //        , new {task.Id, task.Title, Done = false });
+        //}
+
+        //create con mediatr
+        private static async Task<IResult> Create(
+            CreateTaskRequest request, ISender sender, CancellationToken ct)
         {
-            var task = new TaskItem
-            {
-                Title = request.Title
-                , Status = TaskStatus.Todo
-                , AssignedToId = request.AssignedToId
-                , ProjectId = request.ProjectId
-            };
+            var id = await sender.Send(
+                new CreateTask.Command(request.Title, request.ProjectId, request.AssignedToId)
+                , ct
+            );
 
-            db.TaskItems.Add(task);
-            await db.SaveChangesAsync(ct);
-
-            // Por ahora solo echamos el request de vuelta
-            return Results.Created($"/tasks/{task.Id}"
-                , new {task.Id, task.Title, Done = false });
+            return Results.Created($"/tasks/{id}", new { Id = id });
         }
 
         //PUT actualizar una tarea
