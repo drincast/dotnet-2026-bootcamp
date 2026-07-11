@@ -35,7 +35,17 @@ Content-Type: application/json
 }
 
 ###
-DELETE {{TaskManager.Api_HostAddress}}/tasks/1
+DELETE {{TaskManager.Api_HostAddress}}/tasks/5
 Accept: application/json
+
+###
+PUT {{TaskManager.Api_HostAddress}}/tasks/4
+Content-Type: application/json
+Content-Type: application/json
+{
+  "Title": "tarea cuatro nuevo con mediatr",
+  "status": "Todo"
+}
+
 
 ###

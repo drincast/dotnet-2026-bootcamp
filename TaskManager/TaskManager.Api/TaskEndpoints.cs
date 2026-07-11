@@ -60,62 +60,80 @@ namespace TaskManager.Api
         }
 
         //GET /tasks - retorna una tarea por id
-        private static async Task<IResult> GetById(TaskManagerDbContext db
-            , CancellationToken ct
-            , int id)
-        {
-            var task = await db.TaskItems
-                .AsNoTracking()
-                .Where(t => t.Id == id)
-                .Select( t => new
-                {
-                    t.Id, t.Title, Done = t.Status == TaskStatus.Done
-                })
-                .FirstOrDefaultAsync(ct);
+        //private static async Task<IResult> GetById(TaskManagerDbContext db
+        //    , CancellationToken ct
+        //    , int id)
+        //{
+        //    var task = await db.TaskItems
+        //        .AsNoTracking()
+        //        .Where(t => t.Id == id)
+        //        .Select( t => new
+        //        {
+        //            t.Id, t.Title, Done = t.Status == TaskStatus.Done
+        //        })
+        //        .FirstOrDefaultAsync(ct);
 
-            return task is null 
-                ? Results.NotFound() 
-                : Results.Ok(task);
+        //    return task is null 
+        //        ? Results.NotFound() 
+        //        : Results.Ok(task);
+        //}
+
+        //con mediatr getbyid
+        private static async Task<IResult> GetById(ISender sender
+            , CancellationToken ct, int id)
+        {
+            var result = await sender.Send(new GetTask.Query(id), ct);
+            return result is null
+                ? Results.NotFound()
+                : Results.Ok(result);
         }
 
         //GEt /tasks/detailed - retorna el detalle de las tareas
-        private static async Task<IResult> GetTaskDetailed(IOptions<TaskManagerOptions> options
-            , TaskManagerDbContext db
-            , CancellationToken ct
-            , int page = 1
-            , int? pageSize = null
-        )
+        //private static async Task<IResult> GetTaskDetailed(IOptions<TaskManagerOptions> options
+        //    , TaskManagerDbContext db
+        //    , CancellationToken ct
+        //    , int page = 1
+        //    , int? pageSize = null
+        //)
+        //{
+        //    //paginación
+        //    var size = pageSize ?? options.Value.DefaultPageSize;
+        //    var totalItems = await db.TaskItems.CountAsync(ct);
+
+        //    var items = await db.TaskItems
+        //           .AsNoTracking()
+        //           .OrderBy(t => t.Id)
+        //           .Skip((page - 1) * size) //salta las paginas anteriores
+        //           .Take(size)
+        //           .Select(t => new TaskDetailDto
+        //           (
+        //               t.Id,
+        //               t.Title,
+        //               t.Description,
+        //               t.Status,
+        //               t.CreatedAt,
+        //               t.ProjectId,
+        //               t.Project!.Name, // Project es obligatorio (FK no-null) → ok dejar el !
+        //               t.AssignedToId,
+        //               t.AssignedTo != null ? t.AssignedTo.Name : null  // AssignedTo es opcional → maneja el null de verdad
+        //           ))
+        //           .ToListAsync(ct);
+
+        //    return Results.Ok(new
+        //    {
+        //        Page = page,
+        //        PageSize = size,
+        //        TotalItems = totalItems,
+        //        Items = items
+        //    });
+        //}
+
+        //con mediatr
+        private static async Task<IResult> GetTaskDetailed(
+            ISender sender, CancellationToken ct, int page = 1, int? pageSize = null)
         {
-            //paginación
-            var size = pageSize ?? options.Value.DefaultPageSize;
-            var totalItems = await db.TaskItems.CountAsync(ct);
-
-            var items = await db.TaskItems
-                   .AsNoTracking()
-                   .OrderBy(t => t.Id)
-                   .Skip((page - 1) * size) //salta las paginas anteriores
-                   .Take(size)
-                   .Select(t => new TaskDetailDto
-                   (
-                       t.Id,
-                       t.Title,
-                       t.Description,
-                       t.Status,
-                       t.CreatedAt,
-                       t.ProjectId,
-                       t.Project!.Name, // Project es obligatorio (FK no-null) → ok dejar el !
-                       t.AssignedToId,
-                       t.AssignedTo != null ? t.AssignedTo.Name : null  // AssignedTo es opcional → maneja el null de verdad
-                   ))
-                   .ToListAsync(ct);
-
-            return Results.Ok(new
-            {
-                Page = page,
-                PageSize = size,
-                TotalItems = totalItems,
-                Items = items
-            });
+            var result = await sender.Send(new GetAllDetailedTasks.Query(page, pageSize), ct);
+            return Results.Ok(result);
         }
 
         //POST /tasks - crea una tarea
@@ -153,44 +171,78 @@ namespace TaskManager.Api
         }
 
         //PUT actualizar una tarea
+        //private static async Task<IResult> Update(UpdateTaskRequest request
+        //    , TaskManagerDbContext db
+        //    , CancellationToken ct
+        //    , int id)
+        //{
+        //    var taskItem = await db.TaskItems.FindAsync([id], ct);
+
+        //    if(taskItem is null)
+        //        return Results.NotFound();
+
+        //    TaskStatus status;
+
+        //    //validacion del estado
+        //    if(!Enum.TryParse<TaskStatus>(request.Status, ignoreCase: true, out status))
+        //        return Results.BadRequest($"Estado inválido: {request.Status}");
+
+        //    taskItem.Title = request.Title;
+        //    taskItem.Status = status;
+        //    await db.SaveChangesAsync(ct);
+
+        //    return Results.NoContent();
+        //}
+
+        //PUT actualizar una tarea
         private static async Task<IResult> Update(UpdateTaskRequest request
-            , TaskManagerDbContext db
+            , ISender sender
             , CancellationToken ct
             , int id)
         {
-            var taskItem = await db.TaskItems.FindAsync([id], ct);
+           var response = await sender.Send(
+                new UpdateTask.Command(id, request.Title, request.Status)
+                , ct
+            );
 
-            if(taskItem is null)
-                return Results.NotFound();
-
-            TaskStatus status;
-
-            //validacion del estado
-            if(!Enum.TryParse<TaskStatus>(request.Status, ignoreCase: true, out status))
-                return Results.BadRequest($"Estado inválido: {request.Status}");
-
-            taskItem.Title = request.Title;
-            taskItem.Status = status;
-            await db.SaveChangesAsync(ct);
-
-            return Results.NoContent();
+            return response switch
+            {
+                UpdateTask.UpdateResult.Success => Results.NoContent(),
+                UpdateTask.UpdateResult.NotFound => Results.NotFound(),
+                UpdateTask.UpdateResult.InvalidStatus => Results.BadRequest($"Estado inválido: {request.Status}"),
+                _ => Results.Problem($"Error en proceso de respuesta, respuesta no identificada")
+            };
         }
 
         //DELETE /tasks - elimina una tarea
-        private static async Task<IResult> Delete(TaskManagerDbContext db
-            , CancellationToken ct
-            ,int id)
+        //private static async Task<IResult> Delete(TaskManagerDbContext db
+        //    , CancellationToken ct
+        //    ,int id)
+        //{
+        //    var taskItem = await db.TaskItems.FindAsync([id], ct);
+
+        //    if(taskItem is null)
+        //        return Results.NotFound();
+
+        //    db.TaskItems.Remove(taskItem);
+        //    await db.SaveChangesAsync(ct);            
+
+        //    // Por ahora siempre responde NoContent — la lógica real llega en Semana 2
+        //    return Results.NoContent();
+        //}
+
+        //delete con mediatr
+        private static async Task<IResult> Delete(
+            ISender sender, CancellationToken ct, int id)
         {
-            var taskItem = await db.TaskItems.FindAsync([id], ct);
+            var response = await sender.Send(
+                new DeleteTask.Command(id)
+                , ct
+            );
 
-            if(taskItem is null)
-                return Results.NotFound();
-
-            db.TaskItems.Remove(taskItem);
-            await db.SaveChangesAsync(ct);            
-            
-            // Por ahora siempre responde NoContent — la lógica real llega en Semana 2
-            return Results.NoContent();
+            return response
+                ? Results.NoContent() 
+                : Results.NotFound();
         }
 
         ///Sección para algunas funciones de utileria en el momento
