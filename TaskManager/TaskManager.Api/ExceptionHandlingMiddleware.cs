@@ -31,7 +31,7 @@ namespace TaskManager.Api
                     // En producción NUNCA expongas ex.Message ni el stack trace
                 });
                    
-                throw;
+                //throw;
             }
         }
     }

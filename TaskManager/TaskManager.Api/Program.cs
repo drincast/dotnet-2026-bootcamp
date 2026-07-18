@@ -1,5 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using TaskManager.Api;
+using TaskManager.Api.Common.Behaviors;
+
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +21,16 @@ builder.Services.AddDbContext<TaskManagerDbContext>(options =>
            .EnableSensitiveDataLogging(builder.Environment.IsDevelopment())
            .EnableDetailedErrors(builder.Environment.IsDevelopment())
 );
+
+//registro de mediatr -> en el momento la última con licencia Apache, luego se creara una rama para actualizarla a la nueva con licencia dual
+builder.Services.AddMediatR(cfg =>
+{
+    cfg.RegisterServicesFromAssembly(typeof(Program).Assembly);
+
+    // Pipeline Behaviors — se ejecutan en el orden de registro
+    // LoggingBehavior va PRIMERO para que envuelva a todos los demás
+    cfg.AddOpenBehavior(typeof(LoggingBehavior<,>));
+});
 
 var app = builder.Build();
 
@@ -41,8 +54,6 @@ app.UseMiddleware<RequestLoggingMiddleware>();
 app.UseHttpsRedirection();
 
 //uso de servicios de logica
-// El nombre "GetWeatherForecast" ya está registrado internamente
-app.MapWeatherForecastEndpoint();
 
 //para llamar al api de taskmanager
 app.MapTaskEndpoints();

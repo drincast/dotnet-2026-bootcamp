@@ -1,15 +1,12 @@
 @TaskManager.Api_HostAddress = http://localhost:5151
 # @TaskManager.Api_HostAddress = https://localhost:7220
 
-GET {{TaskManager.Api_HostAddress}}/weatherforecast/
-Accept: application/json
-
 ###
 GET {{TaskManager.Api_HostAddress}}/tasks/
 Accept: application/json
 
 ###
-GET {{TaskManager.Api_HostAddress}}/tasks?page=1
+GET {{TaskManager.Api_HostAddress}}/tasks?page=2
 Accept: application/json
 
 ###
@@ -28,14 +25,24 @@ Accept: application/json
 POST {{TaskManager.Api_HostAddress}}/tasks
 Content-Type: application/json
 {
-  "title": "tarea prueba test",
+  "title": "tarea prueba test 20260717 07",
   "status": "Todo",
   "AssignedToId": null,
   "ProjectId": 1
 }
 
 ###
-DELETE {{TaskManager.Api_HostAddress}}/tasks/1
+DELETE {{TaskManager.Api_HostAddress}}/tasks/9
 Accept: application/json
+
+###
+PUT {{TaskManager.Api_HostAddress}}/tasks/4
+Content-Type: application/json
+Content-Type: application/json
+{
+  "Title": "tarea cuatro nuevo con mediatr",
+  "status": "Todo"
+}
+
 
 ###
