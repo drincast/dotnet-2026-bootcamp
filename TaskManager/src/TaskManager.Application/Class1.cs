@@ -1,4 +1,4 @@
-﻿namespace TaskManager.Domain;
+﻿namespace TaskManager.Application;
 
 public class Class1
 {

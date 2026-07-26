@@ -1,6 +1,10 @@
 ﻿using MediatR;
+using TaskManager.Application.Common.Interfaces;
+using TaskManager.Domain.Entities;
 
-namespace TaskManager.Api.Features.Task
+using TaskStatus = TaskManager.Domain.Entities.TaskStatus;
+
+namespace TaskManager.Application.Features.Task
 {
     public static class UpdateTask
     {
@@ -13,8 +17,8 @@ namespace TaskManager.Api.Features.Task
 
         public sealed class Handler : IRequestHandler<Command, UpdateResult>
         {
-            private readonly TaskManagerDbContext _db;
-            public Handler(TaskManagerDbContext db) => _db = db;
+            private readonly IApplicationDbContext _db;
+            public Handler(IApplicationDbContext db) => _db = db;
 
             public async Task<UpdateResult> Handle(Command request, CancellationToken ct)
             {

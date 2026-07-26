@@ -1,6 +1,8 @@
 ﻿using MediatR;
+using TaskManager.Application.Common.Interfaces;
+using TaskManager.Domain.Entities;
 
-namespace TaskManager.Api.Features.Task
+namespace TaskManager.Application.Features.Task
 {
     public static class DeleteTask
     {
@@ -10,8 +12,8 @@ namespace TaskManager.Api.Features.Task
 
         public sealed class Handler : IRequestHandler<Command, bool>
         {
-            private readonly TaskManagerDbContext _db;
-            public Handler(TaskManagerDbContext db) => _db = db;
+            private readonly IApplicationDbContext _db;
+            public Handler(IApplicationDbContext db) => _db = db;
 
             public async Task<bool> Handle(Command request, CancellationToken ct)
             {

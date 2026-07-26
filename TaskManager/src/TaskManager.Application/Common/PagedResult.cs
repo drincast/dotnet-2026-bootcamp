@@ -1,4 +1,4 @@
-﻿namespace TaskManager.Api.Common
+﻿namespace TaskManager.Application.Common
 {
     /// <summary>
     /// Record para el manejo de paginación para resultados

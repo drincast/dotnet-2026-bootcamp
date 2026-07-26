@@ -1,7 +1,8 @@
 ﻿using MediatR;
 using System.Diagnostics;
+using Microsoft.Extensions.Logging;
 
-namespace TaskManager.Api.Common.Behaviors
+namespace TaskManager.Application.Common.Behaviors
 {
     /// <summary>
     /// Pipeline Behavior que loguea cada Command/Query que pasa por MediatR.

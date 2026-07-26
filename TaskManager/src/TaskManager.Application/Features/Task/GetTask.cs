@@ -1,7 +1,11 @@
 ﻿using MediatR;
+using TaskManager.Application.Common.Interfaces;
+using TaskManager.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace TaskManager.Api.Features.Task
+using TaskStatus = TaskManager.Domain.Entities.TaskStatus;
+
+namespace TaskManager.Application.Features.Task
 {
     public static class GetTask
     {
@@ -16,10 +20,10 @@ namespace TaskManager.Api.Features.Task
         public sealed class Handler
             : IRequestHandler<Query, ItemDto?>
         {
-            private readonly TaskManagerDbContext _db;
+            private readonly IApplicationDbContext _db;
             //private readonly TaskManagerOptions _options;
 
-            public Handler(TaskManagerDbContext db)
+            public Handler(IApplicationDbContext db)
             {
                 _db = db;
                 //_options = options.Value;

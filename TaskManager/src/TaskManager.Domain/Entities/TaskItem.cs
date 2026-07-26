@@ -1,3 +1,5 @@
+namespace TaskManager.Domain.Entities;
+
 //Entities/TaskItem.cs  (Task es palabra reservada en C#)
 public class TaskItem
 {
@@ -7,12 +9,10 @@ public class TaskItem
     public TaskStatus Status { get; set; }
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime? DueDate { get; set; }
-    
+        
     public int ProjectId { get; set; }
     public Project Project { get; set; } = default!;
-    
+        
     public int? AssignedToId { get; set; }
     public User? AssignedTo { get; set; }
 }
-
-public enum TaskStatus { Todo, InProgress, Done, Cancelled }

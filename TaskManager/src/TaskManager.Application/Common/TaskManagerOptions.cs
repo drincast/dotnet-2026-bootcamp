@@ -1,4 +1,4 @@
-﻿namespace TaskManager.Api
+﻿namespace TaskManager.Application.Common
 {
     public class TaskManagerOptions
     {
