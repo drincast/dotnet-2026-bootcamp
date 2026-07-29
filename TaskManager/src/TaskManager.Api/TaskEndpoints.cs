@@ -1,8 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
-using MediatR;
-using TaskManager.Api.Features.Task;
+using TaskManager.Domain.Entities;
+using TaskStatus = TaskManager.Domain.Entities.TaskStatus;
+using TaskManager.Application.Features.Task;
+
+
+// using TaskManager.Api.Features.Task;
 
 namespace TaskManager.Api
 {
