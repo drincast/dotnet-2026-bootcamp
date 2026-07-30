@@ -17,7 +17,7 @@ Semana 4 mete tres bloques conceptualmente distintos y el plan le da 18-20h — 
 | **Parte 2** | Reestructuración física a Clean Architecture | Crear los 4 proyectos (`Domain`, `Application`, `Infrastructure`, `Api`), mover entidades / handlers / DbContext / configuraciones, arreglar referencias, migrar el DbContext y las migrations a Infrastructure | Cirugía de código |
 | **Parte 3** | DDD táctico aplicado | Value Objects (ej. un `Email` para `User`), invariantes en la entidad `TaskItem`, Domain Events (`TaskCreatedEvent`) — sentando la base del microservicio de notificaciones de S9 | Modelado de dominio |
 
-**Nota de criterio senior:** en esta Parte 1 se decide *conscientemente* aplicar Clean Architecture aun sabiendo que para una API de este tamaño Vertical Slice sería más pragmático. La razón es de empleabilidad: **Clean Architecture es lo que más piden en ofertas y lo que más preguntan en entrevistas**, y hay que haberla construido a mano para defenderla. Ese trade-off explícito ("sé que es over-engineering para este tamaño, pero...") es exactamente lo que un entrevistador senior quiere oír — es la distinción que separa un senior de alguien que aplica patrones por dogma.
+**Nota de criterio senior:** en esta Parte 1 se decide *conscientemente* aplicar Clean Architecture aun sabiendo que para una API de este tamaño Vertical Slice sería más pragmático. La razón es de empleabilidad: **Clean Architecture es lo que más piden en ofertas y lo que más preguntan en entrevistas**, y hay que haberla construido a mano para defenderla.
 
 ---
 
@@ -228,3 +228,4 @@ En la Parte 2 se crea la estructura de carpetas/proyectos real: `TaskManager.Dom
 | Parte 3 — DDD táctico (Aggregate, Value Object, Domain Events) + cierre | ⏳ Pendiente |
 
 Recordatorio: ya se está en condiciones de empezar a postularse desde la Semana 5–6 sin esperar el plan completo.
+(✅, ⏳)
